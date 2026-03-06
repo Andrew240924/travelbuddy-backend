@@ -1,0 +1,88 @@
+1. Auth
+
+Регистрация и вход пользователя.
+
+API
+
+POST /auth/register (сделано)
+POST /auth/login (сделано)
+GET /auth/profile
+
+
+2. Users
+
+Работа с профилем пользователя.
+
+API
+
+GET /users/:id
+PATCH /users/:id
+GET /users/:id/routes
+GET /users/me (сделано)
+
+
+3. Routes (основная часть сайта)
+
+Создание и просмотр маршрутов.
+
+API
+
+POST /routes
+GET /routes
+GET /routes/:id
+PATCH /routes/:id
+DELETE /routes/:id
+
+Фильтры:
+
+GET /routes?category=
+GET /routes?author=
+GET /routes?public=true
+
+
+4. Route Points
+
+Точки маршрута.
+
+POST /routes/:id/points
+GET /routes/:id/points
+PATCH /points/:id
+DELETE /points/:id
+
+
+5. Categories
+
+Категории маршрутов.
+
+GET /categories
+POST /categories
+POST /routes/:id/categories
+DELETE /routes/:id/categories/:categoryId
+
+
+6. Favorites
+
+Избранное.
+
+POST /favorites/:routeId
+DELETE /favorites/:routeId
+GET /favorites
+
+
+7. Saved Routes
+
+Сохранённые маршруты.
+
+POST /saved/:routeId
+DELETE /saved/:routeId
+GET /saved
+
+
+8. Reviews
+
+Отзывы и рейтинг маршрутов.
+
+POST /routes/:id/review
+GET /routes/:id/reviews
+PATCH /reviews/:id
+DELETE /reviews/:id
