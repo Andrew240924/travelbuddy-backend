@@ -1,4 +1,4 @@
-1. Auth
+﻿1. Auth
 
 Регистрация и вход пользователя.
 
@@ -6,7 +6,7 @@ API
 
 POST /auth/register (сделано)
 POST /auth/login (сделано)
-GET /auth/profile
+GET /auth/profile (не сделано)
 
 
 2. Users
@@ -15,74 +15,76 @@ GET /auth/profile
 
 API
 
-GET /users/:id
-PATCH /users/:id
-GET /users/:id/routes
+GET /users/:id (не сделано)
+PATCH /users/:id (не сделано)
+GET /users/:id/routes (не сделано)
 GET /users/me (сделано)
 
 
-3. Routes (основная часть сайта)
+3. Routes (основная часть сайта) (сделано)
 
 Создание и просмотр маршрутов.
 
 API
 
-POST /routes
-GET /routes
-GET /routes/:id
-PATCH /routes/:id
-DELETE /routes/:id
+POST /routes (сделано)
+GET /routes (сделано)
+GET /routes/:id (сделано)
+PATCH /routes/:id (сделано)
+DELETE /routes/:id (сделано)
+GET /routes/public (сделано, есть в коде)
 
 Фильтры:
 
-GET /routes?category=
-GET /routes?author=
-GET /routes?public=true
+GET /routes?category= (не сделано)
+GET /routes?author= (не сделано)
+GET /routes?public=true (не сделано, вместо этого есть GET /routes/public)
 
 
 4. Route Points
 
 Точки маршрута.
 
-POST /routes/:id/points
-GET /routes/:id/points
-PATCH /points/:id
-DELETE /points/:id
+POST /routes/:id/points (не сделано)
+GET /routes/:id/points (не сделано)
+PATCH /points/:id (не сделано)
+DELETE /points/:id (не сделано)
 
 
-5. Categories
+5. Categories (сделано)
 
 Категории маршрутов.
 
-GET /categories
-POST /categories
-POST /routes/:id/categories
-DELETE /routes/:id/categories/:categoryId
+GET /categories (сделано)
+POST /categories (сделано)
+POST /routes/:id/categories (сделано)
+DELETE /routes/:id/categories/:categoryId (сделано)
 
 
 6. Favorites
 
 Избранное.
 
-POST /favorites/:routeId
-DELETE /favorites/:routeId
-GET /favorites
+POST /favorites/:routeId (не сделано)
+DELETE /favorites/:routeId (не сделано)
+GET /favorites (не сделано)
 
 
 7. Saved Routes
 
 Сохранённые маршруты.
 
-POST /saved/:routeId
-DELETE /saved/:routeId
-GET /saved
+POST /saved/:routeId (не сделано)
+DELETE /saved/:routeId (не сделано)
+GET /saved (не сделано)
 
 
 8. Reviews
 
 Отзывы и рейтинг маршрутов.
 
-POST /routes/:id/review
-GET /routes/:id/reviews
-PATCH /reviews/:id
-DELETE /reviews/:id
+POST /routes/:id/review (не сделано)
+GET /routes/:id/reviews (не сделано)
+PATCH /reviews/:id (не сделано)
+DELETE /reviews/:id (не сделано)
+
