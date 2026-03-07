@@ -83,10 +83,10 @@ GET /saved (сделано)
 
 Отзывы и рейтинг маршрутов.
 
-POST /routes/:id/review (не сделано)
-GET /routes/:id/reviews (не сделано)
-PATCH /reviews/:id (не сделано)
-DELETE /reviews/:id (не сделано)
+POST /routes/:id/review (сделано)
+GET /routes/:id/reviews (сделано)
+PATCH /reviews/:id (сделано)
+DELETE /reviews/:id (сделано)
 
 
 9. Что еще не сделано (общий список)
@@ -98,7 +98,3 @@ GET /users/:id/routes
 GET /routes?category=
 GET /routes?author=
 GET /routes?public=true
-POST /routes/:id/review
-GET /routes/:id/reviews
-PATCH /reviews/:id
-DELETE /reviews/:id
