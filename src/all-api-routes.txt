@@ -45,10 +45,10 @@ GET /routes?public=true (не сделано, вместо этого есть G
 
 Точки маршрута.
 
-POST /routes/:id/points (не сделано)
-GET /routes/:id/points (не сделано)
-PATCH /points/:id (не сделано)
-DELETE /points/:id (не сделано)
+POST /routes/:id/points (сделано)
+GET /routes/:id/points (сделано)
+PATCH /points/:id (сделано)
+DELETE /points/:id (сделано)
 
 
 5. Categories (сделано)
@@ -74,9 +74,9 @@ GET /favorites (не сделано)
 
 Сохранённые маршруты.
 
-POST /saved/:routeId (не сделано)
-DELETE /saved/:routeId (не сделано)
-GET /saved (не сделано)
+POST /saved/:routeId (сделано)
+DELETE /saved/:routeId (сделано)
+GET /saved (сделано)
 
 
 8. Reviews
@@ -88,3 +88,20 @@ GET /routes/:id/reviews (не сделано)
 PATCH /reviews/:id (не сделано)
 DELETE /reviews/:id (не сделано)
 
+
+9. Что еще не сделано (общий список)
+
+GET /auth/profile
+GET /users/:id
+PATCH /users/:id
+GET /users/:id/routes
+GET /routes?category=
+GET /routes?author=
+GET /routes?public=true
+POST /favorites/:routeId
+DELETE /favorites/:routeId
+GET /favorites
+POST /routes/:id/review
+GET /routes/:id/reviews
+PATCH /reviews/:id
+DELETE /reviews/:id

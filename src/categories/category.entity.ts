@@ -13,13 +13,16 @@ export class Category {
   @PrimaryGeneratedColumn({ name: 'category_id' })
   categoryId: number;
 
-  @Column()
+  @Column({ name: 'name' })
   name: string;
 
   @Column({ name: 'is_public', default: false })
   isPublic: boolean;
 
-  @ManyToOne(() => User, { onDelete: 'SET NULL' })
+  @ManyToOne(() => User, (user) => user.categories, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'creator_id' })
   creator: User;
 }

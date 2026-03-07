@@ -12,13 +12,13 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RouteCategoriesService } from './route-categories.service';
 import { AddRouteCategoryDto } from './dto/add-route-category.dto';
 
-@Controller()
+@Controller('routes')
 export class RouteCategoriesController {
 
   constructor(private routeCategoriesService: RouteCategoriesService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('routes/:id/categories')
+  @Post(':id/categories')
   addCategoryToRoute(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: AddRouteCategoryDto,
@@ -27,7 +27,7 @@ export class RouteCategoriesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('routes/:id/categories/:categoryId')
+  @Delete(':id/categories/:categoryId')
   removeCategoryFromRoute(
     @Param('id', ParseIntPipe) id: number,
     @Param('categoryId', ParseIntPipe) categoryId: number,
