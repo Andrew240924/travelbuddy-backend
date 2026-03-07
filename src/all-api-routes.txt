@@ -65,9 +65,9 @@ DELETE /routes/:id/categories/:categoryId (сделано)
 
 Избранное.
 
-POST /favorites/:routeId (не сделано)
-DELETE /favorites/:routeId (не сделано)
-GET /favorites (не сделано)
+POST /favorites/:routeId (сделано)
+DELETE /favorites/:routeId (сделано)
+GET /favorites (сделано)
 
 
 7. Saved Routes
@@ -98,9 +98,6 @@ GET /users/:id/routes
 GET /routes?category=
 GET /routes?author=
 GET /routes?public=true
-POST /favorites/:routeId
-DELETE /favorites/:routeId
-GET /favorites
 POST /routes/:id/review
 GET /routes/:id/reviews
 PATCH /reviews/:id

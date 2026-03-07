@@ -6,21 +6,21 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { SavedRoute } from './saved-route.entity';
+import { Favorite } from './favorite.entity';
 import { Route } from '../routes/route.entity';
 import { User } from '../users/user.entity';
 
 @Injectable()
-export class SavedRoutesService {
+export class FavoritesService {
 
   constructor(
-    @InjectRepository(SavedRoute)
-    private savedRoutesRepository: Repository<SavedRoute>,
+    @InjectRepository(Favorite)
+    private favoritesRepository: Repository<Favorite>,
     @InjectRepository(Route)
     private routesRepository: Repository<Route>,
   ) {}
 
-  async saveRoute(routeId: number, user: { userId: number }) {
+  async addToFavorites(routeId: number, user: { userId: number }) {
     const route = await this.routesRepository.findOne({
       where: { routeId },
       relations: ['author'],
@@ -37,7 +37,7 @@ export class SavedRoutesService {
       throw new NotFoundException('Route not found');
     }
 
-    const existing = await this.savedRoutesRepository.findOne({
+    const existing = await this.favoritesRepository.findOne({
       where: {
         route: { routeId },
         user: { userId: user.userId },
@@ -46,19 +46,19 @@ export class SavedRoutesService {
     });
 
     if (existing) {
-      throw new ConflictException('Route already saved');
+      throw new ConflictException('Route already in favorites');
     }
 
-    const savedRoute = this.savedRoutesRepository.create({
+    const favorite = this.favoritesRepository.create({
       route,
       user: { userId: user.userId } as User,
     });
 
-    return this.savedRoutesRepository.save(savedRoute);
+    return this.favoritesRepository.save(favorite);
   }
 
-  async removeSavedRoute(routeId: number, user: { userId: number }) {
-    const savedRoute = await this.savedRoutesRepository.findOne({
+  async removeFromFavorites(routeId: number, user: { userId: number }) {
+    const favorite = await this.favoritesRepository.findOne({
       where: {
         route: { routeId },
         user: { userId: user.userId },
@@ -66,25 +66,25 @@ export class SavedRoutesService {
       relations: ['route', 'user'],
     });
 
-    if (!savedRoute) {
-      throw new NotFoundException('Saved route not found');
+    if (!favorite) {
+      throw new NotFoundException('Favorite not found');
     }
 
-    await this.savedRoutesRepository.delete(savedRoute.savedRouteId);
+    await this.favoritesRepository.delete(favorite.favoriteId);
 
     return {
-      message: 'Route removed from saved',
+      message: 'Route removed from favorites',
     };
   }
 
-  async findMySavedRoutes(user: { userId: number }) {
-    return this.savedRoutesRepository.find({
+  async findMyFavorites(user: { userId: number }) {
+    return this.favoritesRepository.find({
       where: {
         user: { userId: user.userId },
       },
       relations: ['route', 'route.author'],
       order: {
-        savedRouteId: 'DESC',
+        favoriteId: 'DESC',
       },
     });
   }
