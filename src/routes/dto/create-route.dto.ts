@@ -11,7 +11,7 @@ export class CreateRouteDto {
   @IsString()
   description?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/route-cover.jpg' })
+  @ApiPropertyOptional({ example: '/uploads/routes/1739871261000-214623874.jpg' })
   @IsOptional()
   @IsString()
   imageUrl?: string;

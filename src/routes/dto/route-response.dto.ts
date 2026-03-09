@@ -11,7 +11,7 @@ export class RouteResponseDto {
   @ApiPropertyOptional({ example: 'A short city trip with museums and food places.' })
   description?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/route-cover.jpg' })
+  @ApiPropertyOptional({ example: '/uploads/routes/1739871261000-214623874.jpg' })
   imageUrl?: string;
 
   @ApiProperty({ enum: ['private', 'public'], example: 'public' })
@@ -19,6 +19,9 @@ export class RouteResponseDto {
 
   @ApiPropertyOptional({ example: 5 })
   durationDays?: number;
+
+  @ApiProperty({ example: false })
+  isCompleted: boolean;
 
   @ApiPropertyOptional({ type: UserSummaryDto })
   author?: UserSummaryDto;

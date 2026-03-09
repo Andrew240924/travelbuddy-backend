@@ -52,4 +52,18 @@ export class RoutesService {
   async delete(id: number) {
     return this.routesRepository.delete(id);
   }
+
+  async publish(id: number) {
+    await this.routesRepository.update(id, {
+      visibility: 'public',
+    });
+    return this.findOne(id);
+  }
+
+  async complete(id: number) {
+    await this.routesRepository.update(id, {
+      isCompleted: true,
+    });
+    return this.findOne(id);
+  }
 }

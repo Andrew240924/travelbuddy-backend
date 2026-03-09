@@ -35,6 +35,12 @@ export class Route {
   })
   durationDays: number;
 
+  @Column({
+    name: 'is_completed',
+    default: false,
+  })
+  isCompleted: boolean;
+
   @ManyToOne(() => User, (user) => user.routes, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'author_id' })
   author: User;
