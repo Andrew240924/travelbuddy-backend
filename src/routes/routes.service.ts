@@ -31,10 +31,33 @@ export class RoutesService {
     });
   }
 
-  async findAll() {
-    return this.routesRepository.find({
-      relations: ['author'],
-    });
+  async findAll(category?: string) {
+    if (!category) {
+      return this.routesRepository.find({
+        relations: ['author'],
+      });
+    }
+
+    const isCategoryId = Number.isInteger(Number(category));
+
+    const query = this.routesRepository
+      .createQueryBuilder('route')
+      .leftJoinAndSelect('route.author', 'author')
+      .innerJoin('route_categories', 'rc', 'rc.route_id = route.route_id')
+      .innerJoin('categories', 'c', 'c.category_id = rc.category_id')
+      .distinct(true);
+
+    if (isCategoryId) {
+      query.where('c.category_id = :categoryId', {
+        categoryId: Number(category),
+      });
+    } else {
+      query.where('LOWER(c.name) = LOWER(:categoryName)', {
+        categoryName: category,
+      });
+    }
+
+    return query.getMany();
   }
 
   async findOne(id: number) {

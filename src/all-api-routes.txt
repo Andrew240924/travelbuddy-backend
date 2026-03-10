@@ -1,12 +1,14 @@
-﻿1. Auth
+Префикс для всех API-роутов: /api
+
+1. Auth
 
 Регистрация и вход пользователя.
 
 API
 
-POST /auth/register (сделано)
-POST /auth/login (сделано)
-GET /auth/profile (не сделано)
+POST /api/auth/register (сделано)
+POST /api/auth/login (сделано)
+GET /api/auth/profile (не сделано)
 
 
 2. Users
@@ -15,86 +17,99 @@ GET /auth/profile (не сделано)
 
 API
 
-GET /users/:id (не сделано)
-PATCH /users/:id (не сделано)
-GET /users/:id/routes (не сделано)
-GET /users/me (сделано)
+GET /api/users/me (сделано)
+GET /api/users/me/routes/private (сделано)
+GET /api/users/me/routes/published (сделано)
+GET /api/users/me/saved (сделано)
+GET /api/users/me/favorites (сделано)
+GET /api/users/:id (не сделано)
+PATCH /api/users/:id (сделано, только владелец)
+GET /api/users/:id/routes (не сделано)
 
 
-3. Routes (основная часть сайта) (сделано)
+3. Routes (основная часть сайта)
 
 Создание и просмотр маршрутов.
 
 API
 
-POST /routes (сделано)
-GET /routes (сделано)
-GET /routes/:id (сделано)
-PATCH /routes/:id (сделано)
-DELETE /routes/:id (сделано)
-GET /routes/public (сделано, есть в коде)
+POST /api/routes (сделано)
+GET /api/routes (сделано)
+GET /api/routes/:id (сделано)
+PATCH /api/routes/:id (сделано)
+DELETE /api/routes/:id (сделано)
+GET /api/routes/public (сделано)
+POST /api/routes/upload-image (сделано)
+PATCH /api/routes/:id/publish (сделано)
+PATCH /api/routes/:id/complete (сделано)
 
 Фильтры:
 
-GET /routes?category= (не сделано)
-GET /routes?author= (не сделано)
-GET /routes?public=true (не сделано, вместо этого есть GET /routes/public)
+GET /api/routes?category= (сделано)
+GET /api/routes?author= (не сделано)
+GET /api/routes?public=true (не сделано, вместо этого есть GET /api/routes/public)
 
 
 4. Route Points
 
 Точки маршрута.
 
-POST /routes/:id/points (сделано)
-GET /routes/:id/points (сделано)
-PATCH /points/:id (сделано)
-DELETE /points/:id (сделано)
+POST /api/routes/:id/points (сделано)
+GET /api/routes/:id/points (сделано)
+PATCH /api/points/:id (сделано)
+DELETE /api/points/:id (сделано)
 
 
-5. Categories (сделано)
+5. Categories
 
 Категории маршрутов.
 
-GET /categories (сделано)
-POST /categories (сделано)
-POST /routes/:id/categories (сделано)
-DELETE /routes/:id/categories/:categoryId (сделано)
+GET /api/categories (сделано)
+POST /api/categories (сделано)
+POST /api/routes/:id/categories (сделано)
+DELETE /api/routes/:id/categories/:categoryId (сделано)
 
 
 6. Favorites
 
 Избранное.
 
-POST /favorites/:routeId (сделано)
-DELETE /favorites/:routeId (сделано)
-GET /favorites (сделано)
+POST /api/favorites/:routeId (сделано)
+DELETE /api/favorites/:routeId (сделано)
+GET /api/favorites (сделано)
 
 
 7. Saved Routes
 
 Сохранённые маршруты.
 
-POST /saved/:routeId (сделано)
-DELETE /saved/:routeId (сделано)
-GET /saved (сделано)
+POST /api/saved/:routeId (сделано)
+DELETE /api/saved/:routeId (сделано)
+GET /api/saved (сделано)
 
 
 8. Reviews
 
 Отзывы и рейтинг маршрутов.
 
-POST /routes/:id/review (сделано)
-GET /routes/:id/reviews (сделано)
-PATCH /reviews/:id (сделано)
-DELETE /reviews/:id (сделано)
+POST /api/routes/:id/review (сделано)
+GET /api/routes/:id/reviews (сделано)
+PATCH /api/reviews/:id (сделано)
+DELETE /api/reviews/:id (сделано)
 
 
-9. Что еще не сделано (общий список)
+9. Reports
 
-GET /auth/profile
-GET /users/:id
-PATCH /users/:id
-GET /users/:id/routes
-GET /routes?category=
-GET /routes?author=
-GET /routes?public=true
+Отчеты по аккаунту.
+
+GET /api/reports/account?format=html|xml (сделано, защищенный)
+
+
+10. Что еще не сделано (общий список)
+
+GET /api/auth/profile
+GET /api/users/:id
+GET /api/users/:id/routes
+GET /api/routes?author=
+GET /api/routes?public=true
+

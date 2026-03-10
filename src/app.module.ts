@@ -9,6 +9,7 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { RouteCategoriesModule } from './route-categories/route-categories.module';
 import { CategoriesModule } from './categories/categories.module';
 import { RoutePointsModule } from './route-points/route-points.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { RoutePointsModule } from './route-points/route-points.module';
     RouteCategoriesModule,
     CategoriesModule,
     RoutePointsModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}

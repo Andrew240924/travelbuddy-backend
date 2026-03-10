@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { User } from './user.entity';
+import { ReportsController } from './reports.controller';
+import { ReportsService } from './reports.service';
+import { User } from '../users/user.entity';
 import { Route } from '../routes/route.entity';
 import { SavedRoute } from '../saved-routes/saved-route.entity';
 import { Favorite } from '../favorites/favorite.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Route, SavedRoute, Favorite])],
-  controllers: [UsersController],
-  providers: [UsersService],
-  exports: [UsersService],
+  controllers: [ReportsController],
+  providers: [ReportsService],
 })
-export class UsersModule {}
+export class ReportsModule {}

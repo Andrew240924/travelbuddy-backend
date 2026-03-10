@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseFilePipeBuilder,
+  Query,
   Patch,
   Post,
   Request,
@@ -22,6 +23,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
@@ -47,10 +49,16 @@ export class RoutesController {
   constructor(private routesService: RoutesService) {}
 
   @ApiOperation({ summary: 'Get all routes' })
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    type: String,
+    description: 'Filter routes by category id or exact category name',
+  })
   @ApiOkResponse({ type: RouteResponseDto, isArray: true })
   @Get()
-  findAll() {
-    return this.routesService.findAll();
+  findAll(@Query('category') category?: string) {
+    return this.routesService.findAll(category);
   }
 
   @ApiOperation({ summary: 'Get public routes only' })
