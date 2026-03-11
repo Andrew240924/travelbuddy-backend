@@ -54,6 +54,13 @@ export class ReviewsController {
     return this.reviewsService.findByRoute(id);
   }
 
+  @ApiOperation({ summary: 'Get 5 showcase reviews for homepage' })
+  @ApiOkResponse({ type: ReviewResponseDto, isArray: true })
+  @Get('reviews/showcase')
+  findShowcase() {
+    return this.reviewsService.findShowcase(5);
+  }
+
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Update review by id' })

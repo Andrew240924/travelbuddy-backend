@@ -56,22 +56,27 @@ export class ReviewsService {
   }
 
   async findByRoute(routeId: number) {
-    const route = await this.routesRepository.findOne({
-      where: { routeId, visibility: 'public' },
-    });
-
-    if (!route) {
-      throw new NotFoundException('Route not found');
-    }
-
     return this.reviewsRepository.find({
       where: {
-        route: { routeId },
+        route: { routeId, visibility: 'public' },
       },
       relations: ['user', 'route'],
       order: {
         reviewId: 'DESC',
       },
+    });
+  }
+
+  findShowcase(limit = 5) {
+    return this.reviewsRepository.find({
+      where: {
+        route: { visibility: 'public' },
+      },
+      relations: ['user', 'route'],
+      order: {
+        reviewId: 'DESC',
+      },
+      take: limit,
     });
   }
 

@@ -10,6 +10,8 @@ import { RouteCategoriesModule } from './route-categories/route-categories.modul
 import { CategoriesModule } from './categories/categories.module';
 import { RoutePointsModule } from './route-points/route-points.module';
 import { ReportsModule } from './reports/reports.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -35,5 +37,7 @@ import { ReportsModule } from './reports/reports.module';
     RoutePointsModule,
     ReportsModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Route } from '../routes/route.entity';
 import { SavedRoute } from '../saved-routes/saved-route.entity';
@@ -26,9 +26,39 @@ export class UsersService {
     private favoritesRepository: Repository<Favorite>,
   ) {}
 
-  create(userData: Partial<User>) {
+  async create(userData: Partial<User>) {
     const user = this.usersRepository.create(userData);
-    return this.usersRepository.save(user);
+
+    try {
+      return await this.usersRepository.save(user);
+    } catch (error) {
+      const dbError = error as QueryFailedError & {
+        code?: string;
+        constraint?: string;
+        detail?: string;
+      };
+
+      // PostgreSQL unique violation: https://www.postgresql.org/docs/current/errcodes-appendix.html
+      if (dbError.code === '23505') {
+        if (
+          dbError.constraint?.includes('email') ||
+          dbError.detail?.includes('(email)')
+        ) {
+          throw new ConflictException('Email already in use');
+        }
+
+        if (
+          dbError.constraint?.includes('username') ||
+          dbError.detail?.includes('(username)')
+        ) {
+          throw new ConflictException('Username already in use');
+        }
+
+        throw new ConflictException('Email or username already in use');
+      }
+
+      throw error;
+    }
   }
 
   findByEmail(email: string) {
