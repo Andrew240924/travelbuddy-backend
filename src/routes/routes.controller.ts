@@ -25,6 +25,8 @@ import {
   ApiParam,
   ApiQuery,
   ApiTags,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
@@ -131,9 +133,12 @@ export class RoutesController {
   @ApiOperation({ summary: 'Publish route by id' })
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({ type: RouteResponseDto })
+  @ApiUnauthorizedResponse({ description: 'JWT token is missing or invalid' })
+  @ApiForbiddenResponse({ description: 'You can modify only your own routes' })
+  @ApiNotFoundResponse({ description: 'Route not found' })
   @Patch(':id/publish')
-  publish(@Param('id') id: number) {
-    return this.routesService.publish(id);
+  publish(@Param('id') id: number, @Request() req) {
+    return this.routesService.publish(id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -141,9 +146,12 @@ export class RoutesController {
   @ApiOperation({ summary: 'Mark route as completed by id' })
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({ type: RouteResponseDto })
+  @ApiUnauthorizedResponse({ description: 'JWT token is missing or invalid' })
+  @ApiForbiddenResponse({ description: 'You can modify only your own routes' })
+  @ApiNotFoundResponse({ description: 'Route not found' })
   @Patch(':id/complete')
-  complete(@Param('id') id: number) {
-    return this.routesService.complete(id);
+  complete(@Param('id') id: number, @Request() req) {
+    return this.routesService.complete(id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -151,9 +159,12 @@ export class RoutesController {
   @ApiOperation({ summary: 'Update route by id' })
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({ type: RouteResponseDto })
+  @ApiUnauthorizedResponse({ description: 'JWT token is missing or invalid' })
+  @ApiForbiddenResponse({ description: 'You can modify only your own routes' })
+  @ApiNotFoundResponse({ description: 'Route not found' })
   @Patch(':id')
-  update(@Param('id') id: number, @Body() dto: UpdateRouteDto) {
-    return this.routesService.update(id, dto);
+  update(@Param('id') id: number, @Body() dto: UpdateRouteDto, @Request() req) {
+    return this.routesService.update(id, dto, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -161,8 +172,11 @@ export class RoutesController {
   @ApiOperation({ summary: 'Delete route by id' })
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({ type: DeleteResultDto })
+  @ApiUnauthorizedResponse({ description: 'JWT token is missing or invalid' })
+  @ApiForbiddenResponse({ description: 'You can modify only your own routes' })
+  @ApiNotFoundResponse({ description: 'Route not found' })
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.routesService.delete(id);
+  delete(@Param('id') id: number, @Request() req) {
+    return this.routesService.delete(id, req.user);
   }
 }

@@ -5,15 +5,19 @@
   Param,
   Body,
   ParseIntPipe,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -33,12 +37,20 @@ export class RouteCategoriesController {
   @ApiOperation({ summary: 'Add category to route' })
   @ApiParam({ name: 'id', type: Number })
   @ApiCreatedResponse({ type: RouteCategoryResponseDto })
+  @ApiUnauthorizedResponse({ description: 'JWT token is missing or invalid' })
+  @ApiForbiddenResponse({ description: 'You can modify only your own routes' })
+  @ApiNotFoundResponse({ description: 'Route or category not found' })
   @Post(':id/categories')
   addCategoryToRoute(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: AddRouteCategoryDto,
+    @Request() req,
   ) {
-    return this.routeCategoriesService.addCategoryToRoute(id, dto.categoryId);
+    return this.routeCategoriesService.addCategoryToRoute(
+      id,
+      dto.categoryId,
+      req.user,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -47,11 +59,19 @@ export class RouteCategoriesController {
   @ApiParam({ name: 'id', type: Number })
   @ApiParam({ name: 'categoryId', type: Number })
   @ApiOkResponse({ type: MessageResponseDto })
+  @ApiUnauthorizedResponse({ description: 'JWT token is missing or invalid' })
+  @ApiForbiddenResponse({ description: 'You can modify only your own routes' })
+  @ApiNotFoundResponse({ description: 'Route category relation not found' })
   @Delete(':id/categories/:categoryId')
   removeCategoryFromRoute(
     @Param('id', ParseIntPipe) id: number,
     @Param('categoryId', ParseIntPipe) categoryId: number,
+    @Request() req,
   ) {
-    return this.routeCategoriesService.removeCategoryFromRoute(id, categoryId);
+    return this.routeCategoriesService.removeCategoryFromRoute(
+      id,
+      categoryId,
+      req.user,
+    );
   }
 }

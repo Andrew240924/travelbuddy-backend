@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -28,13 +28,18 @@ export class RoutePointsService {
     });
   }
 
-  async create(routeId: number, dto: CreateRoutePointDto) {
+  async create(routeId: number, dto: CreateRoutePointDto, user: { userId: number }) {
     const route = await this.routesRepository.findOne({
       where: { routeId },
+      relations: ['author'],
     });
 
     if (!route) {
       throw new NotFoundException('Route not found');
+    }
+
+    if (route.author?.userId !== user.userId) {
+      throw new ForbiddenException('You can modify only your own routes');
     }
 
     const point = this.routePointsRepository.create({
@@ -45,14 +50,18 @@ export class RoutePointsService {
     return this.routePointsRepository.save(point);
   }
 
-  async update(id: number, data: Partial<RoutePoint>) {
+  async update(id: number, data: Partial<RoutePoint>, user: { userId: number }) {
     const point = await this.routePointsRepository.findOne({
       where: { pointId: id },
-      relations: ['route'],
+      relations: ['route', 'route.author'],
     });
 
     if (!point) {
       throw new NotFoundException('Route point not found');
+    }
+
+    if (point.route?.author?.userId !== user.userId) {
+      throw new ForbiddenException('You can modify only your own routes');
     }
 
     await this.routePointsRepository.update(point.pointId, data);
@@ -63,13 +72,18 @@ export class RoutePointsService {
     });
   }
 
-  async delete(id: number) {
+  async delete(id: number, user: { userId: number }) {
     const point = await this.routePointsRepository.findOne({
       where: { pointId: id },
+      relations: ['route', 'route.author'],
     });
 
     if (!point) {
       throw new NotFoundException('Route point not found');
+    }
+
+    if (point.route?.author?.userId !== user.userId) {
+      throw new ForbiddenException('You can modify only your own routes');
     }
 
     await this.routePointsRepository.delete(point.pointId);

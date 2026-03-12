@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -67,26 +67,47 @@ export class RoutesService {
     });
   }
 
-  async update(id: number, data: Partial<Route>) {
+  async update(id: number, data: Partial<Route>, user: { userId: number }) {
+    await this.findOwnedRoute(id, user.userId);
     await this.routesRepository.update(id, data);
     return this.findOne(id);
   }
 
-  async delete(id: number) {
+  async delete(id: number, user: { userId: number }) {
+    await this.findOwnedRoute(id, user.userId);
     return this.routesRepository.delete(id);
   }
 
-  async publish(id: number) {
+  async publish(id: number, user: { userId: number }) {
+    await this.findOwnedRoute(id, user.userId);
     await this.routesRepository.update(id, {
       visibility: 'public',
     });
     return this.findOne(id);
   }
 
-  async complete(id: number) {
+  async complete(id: number, user: { userId: number }) {
+    await this.findOwnedRoute(id, user.userId);
     await this.routesRepository.update(id, {
       isCompleted: true,
     });
     return this.findOne(id);
+  }
+
+  private async findOwnedRoute(routeId: number, userId: number) {
+    const route = await this.routesRepository.findOne({
+      where: { routeId },
+      relations: ['author'],
+    });
+
+    if (!route) {
+      throw new NotFoundException('Route not found');
+    }
+
+    if (route.author?.userId !== userId) {
+      throw new ForbiddenException('You can modify only your own routes');
+    }
+
+    return route;
   }
 }

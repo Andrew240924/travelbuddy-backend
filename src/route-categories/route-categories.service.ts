@@ -1,6 +1,7 @@
-﻿import {
+import {
   Injectable,
   ConflictException,
+  ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,13 +23,22 @@ export class RouteCategoriesService {
     private categoriesRepository: Repository<Category>,
   ) {}
 
-  async addCategoryToRoute(routeId: number, categoryId: number) {
+  async addCategoryToRoute(
+    routeId: number,
+    categoryId: number,
+    user: { userId: number },
+  ) {
     const route = await this.routesRepository.findOne({
       where: { routeId },
+      relations: ['author'],
     });
 
     if (!route) {
       throw new NotFoundException('Route not found');
+    }
+
+    if (route.author?.userId !== user.userId) {
+      throw new ForbiddenException('You can modify only your own routes');
     }
 
     const category = await this.categoriesRepository.findOne({
@@ -59,17 +69,25 @@ export class RouteCategoriesService {
     return this.routeCategoriesRepository.save(routeCategory);
   }
 
-  async removeCategoryFromRoute(routeId: number, categoryId: number) {
+  async removeCategoryFromRoute(
+    routeId: number,
+    categoryId: number,
+    user: { userId: number },
+  ) {
     const existing = await this.routeCategoriesRepository.findOne({
       where: {
         route: { routeId },
         category: { categoryId },
       },
-      relations: ['route', 'category'],
+      relations: ['route', 'route.author', 'category'],
     });
 
     if (!existing) {
       throw new NotFoundException('Route category relation not found');
+    }
+
+    if (existing.route?.author?.userId !== user.userId) {
+      throw new ForbiddenException('You can modify only your own routes');
     }
 
     await this.routeCategoriesRepository.delete(existing.routeCategoryId);
